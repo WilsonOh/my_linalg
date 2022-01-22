@@ -12,6 +12,11 @@ I'm still new to linear algebra and python so there may be some mistakes
 - `rref_solver.show_ans`
   - Displays the unique solutions to the augmented matrix in the form of x1, x2,...xn
 
-# **Disclaimer**
+## Requirements
+- numpy (for column slicing and pretty printing etc.)
+
+# *Disclaimer
 This module only supports augmented matrices with unique solutions (for now).
 General solutions have not been implemented yet so results are undetermined.
+
+
