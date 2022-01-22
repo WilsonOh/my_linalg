@@ -13,12 +13,19 @@ class InconsistentMatrixError(ValueError):
         super().__init__(f"row {idx + 1}: {row} is inconsistent.")
 
 
+def is_unique(m: matrix) -> bool:
+    for row in m[:, : len(m[0]) - 1]:
+        if (sum(row != 0)) > 1:
+            return False
+    return True
+
+
 def check_consistency(m: matrix):
     """Checks for the consistency of the system of equations
         in an augmented matrix"""
     m = np.array(m)
     for idx, row in enumerate(m[:, : len(m[0]) - 1]):
-        if (sum(row) != 0) == 0:
+        if sum(row != 0) == 0:
             raise InconsistentMatrixError(m[idx], idx)
 
 
@@ -59,9 +66,11 @@ def ref(m: matrix) -> matrix:
     for idx, row in enumerate(m):
         for i in range(idx):
             if row[i] != 0:
-                mul = row[i]/m[i][i]
-                for j in range(len(row)):
-                    m[idx][j] -= mul * m[i][j]
+                n = m[i][i]
+                if n != 0:
+                    mul = row[i]/n
+                    for j in range(len(row)):
+                        m[idx][j] -= mul * m[i][j]
 
         div = row[idx]
         # Divide each row by the leading entry to make the leading entry 1
@@ -69,6 +78,7 @@ def ref(m: matrix) -> matrix:
             for item_idx, item in enumerate(row[:]):
                 m[idx][item_idx] /= div
 
+    check_consistency(m)
     return m
 
 
@@ -76,5 +86,8 @@ def show_ans(m: matrix) -> None:
     """Finds the RREF of an augmented matrix and prints out
        it's unique solutions"""
     m = rref(ref(m))
-    for idx, row in enumerate(m):
-        print(f"x{idx + 1} = {(row[-1]):.2f}")
+    if is_unique(m):
+        for idx, row in enumerate(m):
+            print(f"x{idx + 1} = {(row[-1]):.2f}")
+    else:
+        print("There are no unique solutions")
