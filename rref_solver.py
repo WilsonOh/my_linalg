@@ -24,10 +24,8 @@ def check_consistency(m: matrix):
 
 def rref(m: matrix) -> matrix:
     """Finds the Reduced Row Echelon Form of an augmented matrix"""
-    check_consistency(m)
-
     # First find the REF of the matrix
-    m = ref(np.array(m))
+    m = ref(m)
 
     # for each entry after the leading entry, subtract by
     # a multiple of the row below to make all entries in
@@ -47,7 +45,7 @@ def ref(m: matrix) -> matrix:
 
     # check for consistency before attempting to solve
     check_consistency(m)
-    m = np.array(m)
+    m = np.array(m, dtype=float)
 
     # Following the gaussian algo, swap the first row with another
     # row that has a non-zero entry in the leftmost column if needed
@@ -64,8 +62,8 @@ def ref(m: matrix) -> matrix:
                 mul = row[i]/m[i][i]
                 for j in range(len(row)):
                     m[idx][j] -= mul * m[i][j]
-        div = row[idx]
 
+        div = row[idx]
         # Divide each row by the leading entry to make the leading entry 1
         if div != 0:
             for item_idx, item in enumerate(row[:]):
@@ -77,6 +75,6 @@ def ref(m: matrix) -> matrix:
 def show_ans(m: matrix) -> None:
     """Finds the RREF of an augmented matrix and prints out
        it's unique solutions"""
-    m = rref(ref(np.array(m)))
+    m = rref(ref(m))
     for idx, row in enumerate(m):
         print(f"x{idx + 1} = {(row[-1]):.2f}")
