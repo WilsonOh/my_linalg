@@ -13,6 +13,10 @@ class InconsistentMatrixError(ValueError):
         super().__init__(f"row {idx + 1}: {row} is inconsistent.")
 
 
+def check_trivial(m: matrix) -> bool:
+    return True if sum(m[:, -1]) == 0 else False
+
+
 def is_unique(m: matrix) -> bool:
     for row in m[:, : len(m[0]) - 1]:
         if (sum(row != 0)) > 1:
@@ -56,7 +60,7 @@ def ref(m: matrix) -> matrix:
 
     # Following the gaussian algo, swap the first row with another
     # row that has a non-zero entry in the leftmost column if needed
-    for idx, n in enumerate(m[:, 0]):
+    for idx, n in enumerate(m[:, 0][0:]):
         if n != 0:
             m[[0, idx]] = m[[idx, 0]]
             break
@@ -82,6 +86,29 @@ def ref(m: matrix) -> matrix:
     return m
 
 
+def eye(order: int) -> matrix:
+    return [[1 if i == j else 0 for i in range(order)] for j in range(order)]
+
+
+def inv(m: matrix):
+    order = len(m)
+    identity = eye(order)
+    block = np.hstack((m, identity))
+    return rref(block)[:, order:]
+
+
+def print_aug_matrix(m: matrix):
+    for row in m:
+        width = max(list(map(len, map(str, row))))
+        for idx, elem in enumerate(row):
+            diff = len(str(elem)) - width
+            if idx == len(row) - 1:
+                print('|', end=' ')
+            print((diff) * ' ', end='')
+            print(elem, end=' ')
+        print()
+
+
 def show_ans(m: matrix) -> None:
     """Finds the RREF of an augmented matrix and prints out
        it's unique solutions"""
@@ -91,3 +118,5 @@ def show_ans(m: matrix) -> None:
             print(f"x{idx + 1} = {(row[-1]):.2f}")
     else:
         print("There are no unique solutions")
+    if check_trivial(m) and is_unique(m):
+        print("Trivial Solution")
