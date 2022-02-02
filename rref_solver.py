@@ -1,6 +1,5 @@
 import numpy as np
 
-
 # Defined 2D list as matrix to make type hints cleaner
 matrix = list[list[float]]
 
@@ -11,6 +10,19 @@ class InconsistentMatrixError(ValueError):
 
     def __init__(self, row, idx):
         super().__init__(f"row {idx + 1}: {row} is inconsistent.")
+
+
+def vander(m: list[int], N=None, increasing=False) -> matrix:
+    vander_monde = []
+    if N is None:
+        N = len(m)
+    if increasing:
+        for i in m:
+            vander_monde.append([i**x for x in range(N)])
+    else:
+        for i in m:
+            vander_monde.append([i**x for x in range(N - 1, -1, -1)])
+    return np.array(vander_monde)
 
 
 def check_trivial(m: matrix) -> bool:
