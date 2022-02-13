@@ -1,29 +1,17 @@
-import rref_solver
+# import matplotlib.pyplot as plt
 import numpy as np
 # import sympy as sym
+from numpy.polynomial.polynomial import Polynomial
 
-# a = [
-#         [3, 2, -4, 3],
-#         [2, 3, 3, 15],
-#         [5, -3, 1, 14]
-#         ]
+# import rref_solver as rs
 
-a = [
-        [1, 0, -1, 0],
-        [4, 0, 0, -2],
-        [0, 2, -2, -1]
-        ]
+# sample_num = 10000
+# v = np.linspace(0, 1, sample_num).reshape(sample_num, 1)
+# b = np.exp(-(v**2))
+# A = np.vander(v.flatten(), increasing=True)
+# ans = np.linalg.solve(A, b)
+# p = Polynomial(ans.flatten())
+# p = p.integ(lbnd=0)
+# print(p(1))
 
-b = [
-        [3, 5],
-        [1, 2]
-        ]
-
-print(rref_solver.inv(b))
-print()
-print(np.linalg.inv(b))
-
-# Answer should be x1 = 3, x2 = 1, x3 = 2
-# print(rref_solver.rref(a))
-# print(sym.Matrix(C).rref())
-# rref_solver.show_ans(a)
+print(np.array([(np.linspace(1, 10, 10))]).T)

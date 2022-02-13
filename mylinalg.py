@@ -1,7 +1,7 @@
 import numpy as np
 
 # Defined 2D list as matrix to make type hints cleaner
-matrix = list[list[float]]
+matrix = np.array(list[list[float]])
 
 
 class InconsistentMatrixError(ValueError):
@@ -10,6 +10,21 @@ class InconsistentMatrixError(ValueError):
 
     def __init__(self, row, idx):
         super().__init__(f"row {idx + 1}: {row} is inconsistent.")
+
+
+def det(m: matrix) -> int:
+    row, col = m.shape
+    if row != col:
+        return ValueError
+    if len(m) == 1:
+        return m[0][0]
+    if len(m) == 2:
+        return (m[0][0] * m[1][1]) - (m[0][1] * m[1][0])
+    res = 0
+    for idx, entry in enumerate(m[0]):
+        minor = np.delete(np.delete(m, 0, 0), idx, 1)
+        res += entry * (-1)**idx * det(minor)
+    return res
 
 
 def vander(m: list[int], N=None, increasing=False) -> matrix:
@@ -68,7 +83,7 @@ def ref(m: matrix) -> matrix:
 
     # check for consistency before attempting to solve
     check_consistency(m)
-    m = np.array(m, dtype=float)
+    m = np.array(m, dtype=np.float64)
 
     # Following the gaussian algo, swap the first row with another
     # row that has a non-zero entry in the leftmost column if needed
