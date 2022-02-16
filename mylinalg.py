@@ -12,7 +12,13 @@ class InconsistentMatrixError(ValueError):
         super().__init__(f"row {idx + 1}: {row} is inconsistent.")
 
 
-def det(m: matrix) -> int:
+def matmul(m: matrix, n: matrix) -> matrix:
+    if len(m[0]) != len(n):
+        raise ValueError("Invalid dimensions for matrix multiplication")
+    return np.array([[np.dot(row, col) for col in n.T] for row in m])
+
+
+def det(m: matrix) -> float:
     row, col = m.shape
     if row != col:
         return ValueError
