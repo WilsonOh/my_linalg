@@ -1,7 +1,5 @@
 import numpy as np
-
-# Defined 2D list as matrix to make type hints cleaner
-matrix = np.ndarray
+from numpy.typing import NDArray
 
 
 class InconsistentMatrixError(ValueError):
@@ -13,25 +11,25 @@ class InconsistentMatrixError(ValueError):
 
 
 """matrix multiplication implementation in pure python"""
-# def matmul(a: matrix, b: matrix) -> matrix:
-#     if len(a[0]) != len(b):
-#         raise ValueError("Invalid dimensions for matrix multiplication")
-#     return [[sum([a[k][j] * b[j][i] for j in range(len(b))])
-#              for i in range(len(b[0]))] for k in range(len(a))]
+def matmul_alt(a: NDArray, b: NDArray) -> NDArray:
+    if len(a[0]) != len(b):
+        raise ValueError("Invalid dimensions for matrix multiplication")
+    return np.array([[sum([a[k][j] * b[j][i] for j in range(len(b))])
+             for i in range(len(b[0]))] for k in range(len(a))])
 
 
-def matmul(m: matrix, n: matrix) -> matrix:
+def matmul(m: NDArray, n: NDArray) -> NDArray:
     """faster and more efficient method using numpy arrays. Though at this
        point you should just use np.matmul"""
     if len(m[0]) != len(n):
-        raise ValueError("Invalid dimensions for matrix multiplication")
+        raise ValueError("Invalid dimensions for NDArray multiplication")
     return np.array([[np.dot(row, col) for col in n.T] for row in m])
 
 
-def det(m: matrix) -> float:
+def det(m: NDArray) -> float:
     row, col = m.shape
     if row != col:
-        raise ValueError("Not a square matrix")
+        raise ValueError("Not a square NDArray")
     if len(m) == 1:
         return m[0][0]
     if len(m) == 2:
@@ -43,7 +41,7 @@ def det(m: matrix) -> float:
     return res
 
 
-def vander(m: list[int], N=None, increasing=False) -> matrix:
+def vander(m: list[int], N=None, increasing=False) -> NDArray:
     vander_monde = []
     if N is None:
         N = len(m)
@@ -56,29 +54,29 @@ def vander(m: list[int], N=None, increasing=False) -> matrix:
     return np.array(vander_monde)
 
 
-def check_trivial(m: matrix) -> bool:
+def check_trivial(m: NDArray) -> bool:
     return True if sum(m[:, -1]) == 0 else False
 
 
-def is_unique(m: matrix) -> bool:
+def is_unique(m: NDArray) -> bool:
     for row in m[:, : len(m[0]) - 1]:
         if (sum(row != 0)) > 1:
             return False
     return True
 
 
-def check_consistency(m: matrix):
+def check_consistency(m: NDArray):
     """Checks for the consistency of the system of equations
-        in an augmented matrix"""
+        in an augmented NDArray"""
     m = np.array(m)
     for idx, row in enumerate(m[:, : len(m[0]) - 1]):
         if sum(row != 0) == 0:
             raise InconsistentMatrixError(m[idx], idx)
 
 
-def rref(m: matrix) -> matrix:
-    """Finds the Reduced Row Echelon Form of an augmented matrix"""
-    # First find the REF of the matrix
+def rref(m: NDArray) -> NDArray:
+    """Finds the Reduced Row Echelon Form of an augmented NDArray"""
+    # First find the REF of the NDArray
     m = ref(m)
 
     # for each entry after the leading entry, subtract by
@@ -89,17 +87,16 @@ def rref(m: matrix) -> matrix:
             n = m[i][i]
             if n != 0:
                 mul = row[i]/n
-                for item_idx, item in enumerate(row):
+                for item_idx, _ in enumerate(row):
                     m[idx][item_idx] -= mul * m[i][item_idx]
     return m
 
 
-def ref(m: matrix) -> matrix:
-    """Finds the Row Echelon Form of an augmented matrix"""
+def ref(m: NDArray) -> NDArray:
+    """Finds the Row Echelon Form of an augmented NDArray"""
 
     # check for consistency before attempting to solve
     check_consistency(m)
-    m = np.array(m, dtype=np.float64)
 
     # Following the gaussian algo, swap the first row with another
     # row that has a non-zero entry in the leftmost column if needed
@@ -122,25 +119,25 @@ def ref(m: matrix) -> matrix:
         div = row[idx]
         # Divide each row by the leading entry to make the leading entry 1
         if div != 0:
-            for item_idx, item in enumerate(row[:]):
+            for item_idx, _ in enumerate(row[:]):
                 m[idx][item_idx] /= div
 
     check_consistency(m)
     return m
 
 
-def eye(order: int) -> matrix:
-    return [[1 if i == j else 0 for i in range(order)] for j in range(order)]
+def eye(order: int) -> NDArray:
+    return np.array([[1 if i == j else 0 for i in range(order)] for j in range(order)])
 
 
-def inv(m: matrix):
+def inv(m: NDArray):
     order = len(m)
     identity = eye(order)
     block = np.hstack((m, identity))
     return rref(block)[:, order:]
 
 
-def print_aug_matrix(m: matrix):
+def print_aug_NDArray(m: NDArray):
     for row in m:
         width = max(list(map(len, map(str, row))))
         for idx, elem in enumerate(row):
@@ -152,8 +149,8 @@ def print_aug_matrix(m: matrix):
         print()
 
 
-def show_ans(m: matrix) -> None:
-    """Finds the RREF of an augmented matrix and prints out
+def show_ans(m: NDArray) -> None:
+    """Finds the RREF of an augmented NDArray and prints out
        it's unique solutions"""
     m = rref(ref(m))
     if is_unique(m):
