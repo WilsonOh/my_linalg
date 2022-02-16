@@ -1,7 +1,7 @@
 import numpy as np
 
 # Defined 2D list as matrix to make type hints cleaner
-matrix = np.array(list[list[float]])
+matrix = np.ndarray
 
 
 class InconsistentMatrixError(ValueError):
@@ -12,7 +12,17 @@ class InconsistentMatrixError(ValueError):
         super().__init__(f"row {idx + 1}: {row} is inconsistent.")
 
 
+"""matrix multiplication implementation in pure python"""
+# def matmul(a: matrix, b: matrix) -> matrix:
+#     if len(a[0]) != len(b):
+#         raise ValueError("Invalid dimensions for matrix multiplication")
+#     return [[sum([a[k][j] * b[j][i] for j in range(len(b))])
+#              for i in range(len(b[0]))] for k in range(len(a))]
+
+
 def matmul(m: matrix, n: matrix) -> matrix:
+    """faster and more efficient method using numpy arrays. Though at this
+       point you should just use np.matmul"""
     if len(m[0]) != len(n):
         raise ValueError("Invalid dimensions for matrix multiplication")
     return np.array([[np.dot(row, col) for col in n.T] for row in m])
@@ -21,7 +31,7 @@ def matmul(m: matrix, n: matrix) -> matrix:
 def det(m: matrix) -> float:
     row, col = m.shape
     if row != col:
-        return ValueError
+        raise ValueError("Not a square matrix")
     if len(m) == 1:
         return m[0][0]
     if len(m) == 2:
