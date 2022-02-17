@@ -18,7 +18,7 @@ I'm still new to linear algebra and python so there may be some mistakes
 
 *   numpy (for column slicing and pretty printing etc.)
 
-# \*Disclaimer
+# \*Disclaimer*
 
 This module only supports augmented matrices with unique solutions (for now).
 General solutions have not been implemented yet so results are undetermined.
