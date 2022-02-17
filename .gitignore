@@ -1,7 +1,6 @@
 venv/*
 .idea/*
 __pycache__/*
-test.py
+*.py
 *.c
-work.py
-det.py
+!my_linalg.py
