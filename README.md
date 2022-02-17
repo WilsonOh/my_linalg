@@ -14,6 +14,8 @@ I'm still new to linear algebra and python so there may be some mistakes
 *   `my_linalg.show_ans`
     *   Displays the unique solutions to the augmented matrix in the form of x1, x2,...xn
 
+*   `det`, `eye`, `matmul` etc...
+
 ## Dependencies
 
 *   numpy (for column slicing and pretty printing etc.)
