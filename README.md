@@ -1,4 +1,4 @@
-# Basic REF/RREF (Row Echelon Form/Reduced Row Echelon Form) solver module
+# Basic Linear Algebra module
 I'm still new to linear algebra and python so there may be some mistakes
 
 ## Functions
