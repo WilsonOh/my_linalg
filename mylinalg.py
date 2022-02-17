@@ -10,12 +10,12 @@ class InconsistentMatrixError(ValueError):
         super().__init__(f"row {idx + 1}: {row} is inconsistent.")
 
 
-"""matrix multiplication implementation in pure python"""
 def matmul_alt(a: NDArray, b: NDArray) -> NDArray:
+    """matrix multiplication implementation in pure python"""
     if len(a[0]) != len(b):
         raise ValueError("Invalid dimensions for matrix multiplication")
     return np.array([[sum([a[k][j] * b[j][i] for j in range(len(b))])
-             for i in range(len(b[0]))] for k in range(len(a))])
+                      for i in range(len(b[0]))] for k in range(len(a))])
 
 
 def matmul(m: NDArray, n: NDArray) -> NDArray:
@@ -127,7 +127,8 @@ def ref(m: NDArray) -> NDArray:
 
 
 def eye(order: int) -> NDArray:
-    return np.array([[1 if i == j else 0 for i in range(order)] for j in range(order)])
+    return np.array([[1 if i == j else 0 for i in range(order)]
+                     for j in range(order)])
 
 
 def inv(m: NDArray):

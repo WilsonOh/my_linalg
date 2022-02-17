@@ -14,4 +14,12 @@ from numpy.polynomial.polynomial import Polynomial
 # p = p.integ(lbnd=0)
 # print(p(1))
 
-print(np.array([(np.linspace(1, 10, 10))]).T)
+
+def eye(n, dtype=float):
+    return np.array(
+            np.fromfunction(lambda i, j: i == j, (n, n), dtype=int),
+            dtype=dtype)
+
+
+print(eye(10, dtype=int))
+print(np.eye(10, dtype=int))
